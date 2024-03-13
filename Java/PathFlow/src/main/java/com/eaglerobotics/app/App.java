@@ -46,8 +46,8 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        Point2D.Double[] points = {new Point2D.Double(0, 0), new Point2D.Double(1, 1), new Point2D.Double(2, 0)};
+        Point2D.Double[] points = {new Point2D.Double(0, 0), new Point2D.Double(1, 1), new Point2D.Double(2, 0), new Point2D.Double(4.2341, 10.4352)};
         BezierFunction bezier = computeBezier(points);
-        System.out.println(bezier.apply(0.4));
+        System.out.println(bezier.apply(0.31415));
     }
 }

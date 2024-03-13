@@ -1,2 +1,4 @@
 com/eaglerobotics/app/App.class
+com/eaglerobotics/app/A_Star.class
+com/eaglerobotics/app/Node.class
 com/eaglerobotics/app/App$BezierFunction.class

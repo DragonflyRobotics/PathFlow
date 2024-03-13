@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import math
 
-points = [[0,0],[1,1], [2,0]]
+points = [[0,0],[1,15], [2,4], [4.2341, 6.4352]]
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1,1,1)
@@ -27,14 +27,16 @@ def compute_bezier(points):
     return bezier
 
 b = compute_bezier(points)
-print(b(0.4))
+# print(b(0.31415))
 def animate(i):
-    # print(b(i/100))
+    #print(b(i/100))
     ax1.clear()
-    ax1.plot(b(i/10)[0], b(i/10)[1], 'o')
+    ax1.plot(b(i/100)[0], b(i/100)[1], 'o')
     ax1.plot(list(zip(*points))[0], list(zip(*points))[1], 'o')
     # ax1.plot(xar,yar)
-# ani = animation.FuncAnimation(fig, animate, interval=100)
-# plt.show()
+ani = animation.FuncAnimation(fig, animate, interval=1, frames=100)
+writervideo = animation.FFMpegWriter(fps=60) 
+ani.save('bezier.mp4', writer=writervideo) 
+plt.show()
 
 
