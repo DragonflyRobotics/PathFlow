@@ -19,5 +19,5 @@ class PIDController:
         i = min(self.iSum * self.kI, self.i_clamp)
         d = self.kD * (self.error - self.prev_error)
         self.prev_error = self.error
-        print(f"Error: {self.error}, Position: {position}, P: {p}, I: {i}, D: {d}")
+        # print(f"Error: {self.error}, Position: {position}, P: {p}, I: {i}, D: {d}")
         return p + i + d
