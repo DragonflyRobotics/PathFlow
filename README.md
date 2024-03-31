@@ -9,4 +9,4 @@ The bindings for FRC WPILib (coming soon) are written with great effort and dedi
 - [Mukesh Kalikaya](https://github.com/Mukesh-Kalikaya)
 - [Jayadeep Velagapudi](https://github.com/Jkvelagapudi)
 
-Please consider visiting our [website][https://team5417.com] and [GitHub][https://github.com/frc5417] for more information about our team and projects!
+Please consider visiting our [website](https://team5417.com) and [GitHub](https://github.com/frc5417) for more information about our team and projects!
