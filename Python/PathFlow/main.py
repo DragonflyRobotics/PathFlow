@@ -1,36 +1,49 @@
-# def demo1():
-#     from pathflow.motionplanning import Bezier
-#     from pathflow.pathfinding import A_Star, Point, a_star
-#     bezierGenerator = Bezier()
-#     points = [[1,2], [4,4], [1,5]]
-#     bezfunc = bezierGenerator.compute_bezier(points)
-#
-#     # bezierGenerator.visualize(bezfunc, points, 100)
-#     # bezierGenerator.save_animation("hehe.mp4", bezfunc, points, 100)
-#
-#     a = A_Star([1,1], [5,5])
-#     a.rectangularObstacle([1,3], [3,2])
-#     end = a.compute([1,1], [2,4])
-#     a.visualize(end, 100)
-#
 from pathflow.controlsystems import PIDController
 import time
-controller = PIDController(25000, 0.0, 0.1)
-controller.set_setpoint(10)
+from pathflow.simulation.motor import Motor
+import matplotlib.pyplot as plt
 
-class Motor:
-    def __init__(self) -> None:
-        self.pos = 0
-        self.time = 0
-        self.mass = 1
-    def step(self, force, dt):
-        self.time += dt
-        self.pos += ((force/self.mass)/2.0) * dt**2
 motor = Motor()
+current_time = 0
+dt = 0.01
 
-while motor.pos != 10:
-    motor.step(controller.step(motor.pos), 0.01)
-    #motor.step(10, 0.01)
-    #print(motor.time, motor.pos)
-    time.sleep(0.01)
+controller = PIDController(1, 0.0, 0.0)
+controller.set_setpoint(3.14159)
+
+times = []
+voltages = []
+thetas = []
+omega = []
+while current_time <= 100:
+    voltage = controller.step(motor.encoder.shaft_theta)
+    # if current_time > 1:
+    #     voltage = 0
+    # else:
+    #     voltage = 10
+    motor.set_power(voltage)
+    motor.update(dt)
+    current_time += dt
+    times.append(current_time)
+    voltages.append(voltage)
+    thetas.append(motor.encoder.shaft_theta)
+    omega.append(motor.encoder.shaft_omega)
+#    time.sleep(dt)
+
+# plt.plot(times, voltages)
+# plt.xlabel('Time (s)')
+# plt.ylabel('Voltage (V)')
+# plt.title('Motor Voltage Over Time')
+# plt.show()
+#
+plt.plot(times, thetas)
+plt.xlabel('Time (s)')
+plt.ylabel('Theta (rad)')
+plt.title('Motor Theta Over Time')
+plt.show()
+
+# plt.plot(times, omega)
+# plt.xlabel('Time (s)')
+# plt.ylabel('Omega (rad/s)')
+# plt.title('Motor Omega Over Time')
+# plt.show()
 

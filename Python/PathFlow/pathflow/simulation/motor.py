@@ -3,7 +3,9 @@ class Encoder:
         self.shaft_theta = 0 # radians
         self.shaft_omega = 0 # radians/sec
         self.time = 0
-    def _update(self, omega, dt): 
+    def update(self, omega, dt): # update the encoder
+        self.shaft_theta += omega * dt
+        self.shaft_omega = omega
         pass
 
 class Motor:
@@ -12,29 +14,25 @@ class Motor:
         self.voltage = 0
         self.time = 0
         self.moment_of_inertia = 0.5 * shaft_mass * shaft_radius**2
-        self.viscous_fric_constant = 0.1 # N.m.s
-        self.electromotive_force_constant = 0.01 # V/(rad/s)
-        self.motor_torque_constant = 0.01 # N.m/A
-        self.resistance = 0.1 # Ohms
+        self.motor_constant = 0.01 # N.m/A
+        self.resistance = 1 # Ohms
         self.inductance = 0.5 # H
+        self.net_shaft_fric = 0.01 # N.m
+        self.shaft_mass = shaft_mass
+        self.shaft_radius = shaft_radius    
+        self.I = [0]
+        self.V = [0]
+        self.omega = [0]
     def set_power(self, voltage):
         self.voltage = voltage
-        self._update()
-        pass
-    def _update(self, dt):
-        pass
+        
+    def update(self, dt):
+        self.V.append(self.voltage)
+        self.I.append(self.I[-1] + ((self.V[-1] - self.I[-1] * self.resistance) / self.inductance) * dt)
+        torque = self.motor_constant * self.I[-1] #Torque equation\
+        if self.omega[-1] > 0:
+            torque -= self.net_shaft_fric
+        alpha = torque / self.moment_of_inertia  # Angular acceleration
+        self.omega.append(self.omega[-1] + alpha * dt)  # Angular velocity
+        self.encoder.update(self.omega[-1], dt)
 
-class SimpleEncoder(Encoder):
-    def __init__(self) -> None:
-        super().__init__()
-        self.previous_pos = 0
-    def _update(self, pos, dt):
-        self.shaft_theta = pos
-        self.shaft_omega = (pos - self.previous_pos) / dt
-
-
-class SimpleMotor(Motor):
-    def __init__(self, shaft_mass, shaft_radius) -> None:
-        super().__init__(shaft_mass, shaft_radius)
-    def _update(self, dt):
-        omega = self.motor_torque_constant / ()

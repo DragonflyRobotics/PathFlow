@@ -5,8 +5,8 @@ class PIDController:
         self.kD = kD
         self.i_clamp = i_clamp
         self.setpoint = None
-        self.error = 0
-        self.prev_error = 0
+        self.error = None
+        self.prev_error = None
         self.iSum = 0
     def set_setpoint(self, setpoint):
         self.setpoint = setpoint
@@ -17,7 +17,7 @@ class PIDController:
         p = self.kP * self.error
         self.iSum = self.iSum + self.error
         i = min(self.iSum * self.kI, self.i_clamp)
-        d = self.kD * (self.error - self.prev_error)
+        d = self.kD * (self.error - self.prev_error) if self.prev_error is not None else 0
         self.prev_error = self.error
-        # print(f"Error: {self.error}, Position: {position}, P: {p}, I: {i}, D: {d}")
+        print(f"Error: {self.error}, Position: {position}, P: {p}, I: {i}, D: {d}")
         return p + i + d
